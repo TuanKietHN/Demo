@@ -18,8 +18,9 @@
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
     </properties>
 
+    <!-- ============== DEPENDENCIES ============== -->
     <dependencies>
-        <!-- Jakarta EE 9.1 (full platform, scope provided vì server đã có) -->
+        <!-- Jakarta EE 9.1 API – server đã có nên scope provided -->
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
@@ -42,9 +43,11 @@
         </dependency>
     </dependencies>
 
+    <!-- ============== BUILD ============== -->
     <build>
         <plugins>
-            <!-- Biên dịch Java 17 -->
+
+            <!-- 1. Biên dịch Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -54,25 +57,17 @@
                 </configuration>
             </plugin>
 
-            <!-- WAR -->
+            <!-- 2. WAR chính -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <includes>
-                                <include>**/*.xhtml</include>
-                            </includes>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
 
-            <!-- JUnit 5 -->
+            <!-- 3. Test (JUnit 5) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -81,6 +76,64 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
+
+            <!-- 4. Đóng gói 2 JAR phụ: EJB & Client -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+
+                <executions>
+                    <!-- 4.a EJB -->
+                    <execution>
+                        <id>ejb-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>jar</goal></goals>
+                        <configuration>
+                            <includes>
+                                <include>vn/aptech/gmtapplication/ejb/**</include>
+                            </includes>
+                            <classifier>ejb</classifier>
+                        </configuration>
+                    </execution>
+
+                    <!-- 4.b Client -->
+                    <execution>
+                        <id>client-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>jar</goal></goals>
+                        <configuration>
+                            <includes>
+                                <include>vn/aptech/gmtapplication/client/**</include>
+                            </includes>
+                            <classifier>client</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 5. Đổi tên file JAR cho “đẹp” (GMTSessionBean.jar, GMTClient.jar) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>rename-jars</id>
+                        <phase>package</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}-ejb.jar"
+                                      tofile="${project.build.directory}/GMTSessionBean.jar" overwrite="true"/>
+                                <copy file="${project.build.directory}/${project.build.finalName}-client.jar"
+                                      tofile="${project.build.directory}/GMTClient.jar" overwrite="true"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
