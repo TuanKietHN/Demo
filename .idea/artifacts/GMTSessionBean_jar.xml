@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GMTSessionBean:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GMTSessionBean_jar</output-path>
+    <root id="archive" name="GMTApplication.jar">
+      <element id="module-output" name="GMTApplication" />
+    </root>
+  </artifact>
+</component>

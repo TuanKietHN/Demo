@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ejb" name="GMTSessionBean">
+    <output-path>$PROJECT_DIR$/out/artifacts/GMTSessionBean</output-path>
+    <root id="root">
+      <element id="module-output" name="GMTApplication" />
+      <element id="javaee-facet-resources" facet="GMTApplication/web/Web" />
+      <element id="javaee-facet-resources" facet="GMTApplication/ejb/EJB" />
+    </root>
+  </artifact>
+</component>

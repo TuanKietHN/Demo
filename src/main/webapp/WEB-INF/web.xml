@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>GMT Application</display-name>
+    <description>Java EE 10 GMT Time Conversion Application with Session Beans</description>
+
+    <!-- Welcome Files -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Context Parameters -->
+    <context-param>
+        <param-name>jakarta.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>jakarta.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- Session Configuration -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+
+
+    <!-- Security Constraints (optional) -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Resources</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Security Roles -->
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
+
+
+
+
+
+    <!-- Servlet Mappings (if not using annotations) -->
+    <!--
+    <servlet>
+        <servlet-name>GMTClientServlet</servlet-name>
+        <servlet-class>com.example.servlet.GMTClientServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GMTClientServlet</servlet-name>
+        <url-pattern>/gmt-client</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AptClientServlet</servlet-name>
+        <servlet-class>com.example.servlet.AptClientServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AptClientServlet</servlet-name>
+        <url-pattern>/apt-client</url-pattern>
+    </servlet-mapping>
+    -->
+
+    <!-- MIME Type Mappings -->
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>application/javascript</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+    <!-- Resource References -->
+    <resource-ref>
+        <description>GMT Application Database</description>
+        <res-ref-name>jdbc/GMTDatabase</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+    <!-- EJB References -->
+    <ejb-ref>
+        <description>GMT Session Bean Reference</description>
+        <ejb-ref-name>ejb/GMTSessionBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <remote>vn.aptech.gmtapplication.ejb.GMTSessionBeanRemote</remote>
+
+    </ejb-ref>
+
+    <ejb-ref>
+        <description>Apt Session Bean Reference</description>
+        <ejb-ref-name>ejb/AptSessionBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <remote>vn.aptech.gmtapplication.ejb.AptSessionBeanRemote</remote>
+
+    </ejb-ref>
+
+    <!-- Environment Entries -->
+    <env-entry>
+        <env-entry-name>app/name</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>GMT Application</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>app/version</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>1.0.0</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>app/debug</env-entry-name>
+        <env-entry-type>java.lang.Boolean</env-entry-type>
+        <env-entry-value>true</env-entry-value>
+    </env-entry>
+
+</web-app>
